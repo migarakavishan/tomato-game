@@ -93,7 +93,7 @@ function Login() {
             </div>
             <button
               type="submit"
-              className=" bg-slate-700 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-2xl focus:outline-none self-center"
+              className="bg-slate-700 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-2xl focus:outline-none self-center"
             >
               Sign up
             </button>
