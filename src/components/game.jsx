@@ -42,11 +42,11 @@ function TomatoGame() {
 
   return (
     <div className="h-screen flex justify-center items-center">
-      <div className="box-content border-blue-200 h-4/6 w-4/6 p-4 border-8 flex justify-center bg-slate-700">
+      <div className="box-content border-blue-200 h-5/6 w-4/6 p-4 border-8 flex justify-center bg-slate-700">
         <div className="flex flex-col justify-center items-center ">
           {!isLoading && (
             <>
-              <div className="text-white mb-4">
+              <div className="text-white mb-4 ">
                 <p>Score: {score}</p>
                 <p>Highest Score: {highestScore}</p>
               </div>

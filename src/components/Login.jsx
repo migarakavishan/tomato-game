@@ -19,7 +19,7 @@ function Login() {
 
   return (
     <div className="h-screen flex justify-center items-center">
-      <div className="box-content h-4/6 w-4/6 p-4 flex justify-center items-center bg-indigo-200">
+      <div className="box-content h-5/6 w-4/6 p-4 flex justify-center items-center bg-indigo-200">
         <div className="max-w-md w-full p-8 h-4/6 bg-purple-400 shadow-md rounded-3xl flex flex-col justify-center items-center">
           <h2 className="text-2xl mb-4 text-white font-bold">Login</h2>
           <form onSubmit={handleSubmit} className="flex flex-col space-y-6 w-full">
