@@ -2,16 +2,26 @@ import React, { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { IoIosLock } from "react-icons/io";
 import { IoIosMail } from "react-icons/io";
+import {useAuth} from '../contexts/authContext/index'
+import { Navigate, Link } from 'react-router-dom'
+import { doSignInWithEmailAndPassword} from '../fireebase/auth'
 
 function Login() {
+
+  const {userLoggedIn} = useAuth()
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [isSigningIn, setIsSigningIn] = useState(false)
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Handle login logic here
-  };
+  const onSubmit = async (e) => {
+    e.preventDefault()
+    if(!isSigningIn) {
+        setIsSigningIn(true)
+        await doSignInWithEmailAndPassword(email, password)
+        // doSendEmailVerification()
+    }
+}
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -21,8 +31,9 @@ function Login() {
     <div className="h-screen flex justify-center items-center">
       <div className="box-content h-5/6 w-4/6 p-4 flex justify-center items-center bg-indigo-200">
         <div className="max-w-md w-full p-8 h-4/6 bg-purple-400 shadow-md rounded-3xl flex flex-col justify-center items-center">
+        {userLoggedIn && (<Navigate to={'/home'} replace={true} />)}
           <h2 className="text-2xl mb-4 text-white font-bold">Login</h2>
-          <form onSubmit={handleSubmit} className="flex flex-col space-y-6 w-full">
+          <form onSubmit={onSubmit} className="flex flex-col space-y-6 w-full">
             <div className="relative w-full">
               <input
                 type="email"
@@ -58,14 +69,14 @@ function Login() {
             </div>
             <button
               type="submit"
-              className=" bg-slate-700 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-2xl focus:outline-none self-center"
+              className=" bg-slate-700 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-2xl focus:outline-none self-center" disabled={isSigningIn}
             >
               Sign in
             </button>
           </form>
           <div className="mt-4 text-center">
             <p className="text-white font-medium">
-              Don't have an account? <a href="/register" className="text-blue-200">Sign up</a>
+              Don't have an account? <Link to={'/register'} className="text-blue-200">Sign up</Link>
             </p>
           </div>
         </div>
