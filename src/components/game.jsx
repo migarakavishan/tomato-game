@@ -79,7 +79,7 @@ function TomatoGame() {
               )}
             </>
           )}
-          {isLoading && <p>Loading...</p>}
+          {isLoading && <p className="text-4xl text-white">Loading...</p>}
         </div>
       </div>
     </div>
