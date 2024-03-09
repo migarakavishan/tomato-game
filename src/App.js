@@ -15,7 +15,7 @@ function App() {
     // Simulate a loading delay
     const timeout = setTimeout(() => {
       setLoading(false);
-    }, 4000);
+    }, 5000);
 
     // Clear timeout if the component unmounts or when loading is completed
     return () => clearTimeout(timeout);
