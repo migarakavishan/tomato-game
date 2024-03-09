@@ -5,6 +5,7 @@ import React, { Fragment, useState } from "react";
 import { FaAward } from "react-icons/fa";
 import { useAuth } from "../contexts/authContext/index";
 import { doSignOut } from "../fireebase/auth";
+import { MdLeaderboard } from "react-icons/md";
 
 function HomePage() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -13,11 +14,7 @@ function HomePage() {
 
   return (
     <div className="h-screen flex justify-center items-center relative">
-      <button className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-blue-500 text-white font-bold py-4 px-8 rounded-full text-xl shadow-lg hover:bg-blue-600" onClick={() => navigate("/play")}>
-        PLAY
-      </button>
-
-      <div className="box-content border-blue-200 h-5/6 w-4/6 p-4 border-8 flex flex-col justify-start items-start bg-slate-700">
+      <div className="box-content border-blue-200 h-5/6 w-4/6 p-4 border-8 justify-start items-start bg-slate-700">
         <div className="flex flex-row ml-10 mt-10 ">
           <div className="mr-80">
             <Menu as="div" className="absolute text-left ">
@@ -116,9 +113,17 @@ function HomePage() {
             </div>
           </div>
 
-          <div className="text-white">
-            <p className="underline hover:text-blue-300">Leaderboard</p>
+          <div className="pl-3 pt-3 pb-3 rounded-2xl bg-slate-400 text-white pr-1">
+            <div className="flex justify-center items-center bg-gray-500 rounded-full h-10 w-10  mr-2">
+            <MdLeaderboard className="text-2xl"/>
+            </div>
           </div>
+        </div>
+
+        <div className="absolute top-1/2 transform -translate-y-1/2 ml-20">
+          <button className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-8 px-9 rounded-full text-6xl" onClick={() => navigate("/play")}>
+            PLAY
+          </button>
         </div>
       </div>
     </div>

@@ -6,6 +6,7 @@ import Login from "./components/Login";
 import SignUp from "./components/Signup";
 import { AuthProvider } from "./contexts/authContext/index";
 import HomePage from "./components/HomePage";
+import MenuPage from "./components/MenuPage";
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -27,7 +28,8 @@ function App() {
           <LoadingScreen />
         ) : (
           <Routes>
-            <Route path="/" element={<Login />} />
+          <Route path="/" element={<MenuPage />} />
+            <Route path="login" element={<Login />} />
             <Route path="register" element={<SignUp />} />
             <Route path="play" element={<TomatoGame />} />
             <Route path="home" element={<HomePage />} />
