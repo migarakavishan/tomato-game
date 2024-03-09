@@ -12,12 +12,12 @@ function App() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Simulate a loading delay
+    
     const timeout = setTimeout(() => {
       setLoading(false);
     }, 5000);
 
-    // Clear timeout if the component unmounts or when loading is completed
+    
     return () => clearTimeout(timeout);
   }, []);
 
