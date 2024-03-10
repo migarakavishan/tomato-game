@@ -1,16 +1,83 @@
 import { Menu, Transition } from "@headlessui/react";
 import classNames from "classnames";
 import { useNavigate } from "react-router-dom";
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import { FaAward } from "react-icons/fa";
 import { useAuth } from "../contexts/authContext/index";
 import { doSignOut } from "../fireebase/auth";
 import { MdLeaderboard } from "react-icons/md";
+import {
+  saveProfileToDatabase,
+  fetchUsernameFromDatabase,
+} from "../fireebase/firebaseUtils";
+
+import { uploadProfileImageToStorage } from "../fireebase/forStroage";
+import { GiTomato } from "react-icons/gi";
 
 function HomePage() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [profileOpen, setProfileOpen] = useState(false);
+  const [profileData, setProfileData] = useState({
+    username: "",
+    email: "",
+    profileImage: "",
+  });
   const { currentUser } = useAuth();
   const navigate = useNavigate();
+  const [profileImage, setProfileImage] = useState(null);
+  const [showWelcomeDialog, setShowWelcomeDialog] = useState(false);
+
+  useEffect(() => {
+    // Initialize profileData with the user's email when the component mounts
+    if (currentUser && currentUser.email) {
+      setProfileData((prevData) => ({
+        ...prevData,
+        email: currentUser.email,
+      }));
+    }
+
+    // Fetch username from the database when the profile dialog is opened
+    if (profileOpen === false && currentUser) {
+      // Fetch the username from the database when profile dialog is closed
+      fetchUsernameFromDatabase(currentUser)
+        .then((username) => {
+          // Check if the username exists
+          if (!username) {
+            // If username doesn't exist, open the welcome dialog
+            setShowWelcomeDialog(true);
+          }
+          setProfileData((prevData) => ({ ...prevData, username }));
+        })
+        .catch((error) => {
+          console.error("Error fetching username:", error);
+        });
+    }
+  }, [currentUser, profileOpen]);
+
+  const handleProfileSave = () => {
+    // Save profile data to Firebase Realtime Database
+    saveProfileToDatabase(profileData, currentUser)
+      .then(() => {
+        console.log("Profile data saved to database:", profileData);
+        // Close the profile dialog after saving changes
+        setProfileOpen(false);
+      })
+      .catch((error) => {
+        console.error("Error saving profile data:", error);
+      });
+  };
+
+  const handleProfileImageChange = async (e) => {
+    const file = e.target.files[0];
+    try {
+      const downloadURL = await uploadProfileImageToStorage(file, currentUser);
+      console.log("Profile image uploaded. Download URL:", downloadURL);
+      // Set the profile image URL in the state
+      setProfileImage(downloadURL);
+    } catch (error) {
+      console.error("Error uploading profile image:", error);
+    }
+  };
 
   return (
     <div className="h-screen flex justify-center items-center relative">
@@ -28,12 +95,13 @@ function HomePage() {
                     <div
                       className="h-10 w-10 rounded-full bg-sky-500 bg-cover bg-no-repeat bg-center"
                       style={{
-                        backgroundImage:
-                          'url("https://source.unsplash.com/80x80?face")',
+                        backgroundImage: profileImage
+                          ? `url(${profileImage})`
+                          : "",
                       }}
                     ></div>
                     <span className="ml-2 mr-2 font-medium text-white">
-                      {currentUser.email.split("@")[0]}
+                      {profileData.username}
                     </span>
                   </div>
                 </Menu.Button>
@@ -60,7 +128,7 @@ function HomePage() {
                             active && "bg-slate-500 rounded-2xl",
                             "text-gray-100 focus:bg-gray-200 cursor-pointer round-2xl px-4 py-2"
                           )}
-                          onClick={() => navigate("/profile")}
+                          onClick={() => setProfileOpen(true)}
                         >
                           Your Profile
                         </div>
@@ -115,16 +183,121 @@ function HomePage() {
 
           <div className="pl-3 pt-3 pb-3 rounded-2xl bg-slate-400 text-white pr-1">
             <div className="flex justify-center items-center bg-gray-500 rounded-full h-10 w-10  mr-2">
-            <MdLeaderboard className="text-2xl"/>
+              <MdLeaderboard className="text-2xl" />
             </div>
           </div>
         </div>
 
         <div className="absolute top-1/2 transform -translate-y-1/2 ml-20">
-          <button className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-8 px-9 rounded-full text-6xl" onClick={() => navigate("/play")}>
+          <button
+            className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-8 px-9 rounded-full text-6xl"
+            onClick={() => navigate("/play")}
+          >
             PLAY
           </button>
         </div>
+
+        {/* Welcome Popup Dialog */}
+        {showWelcomeDialog && (
+          <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50">
+            <div className="bg-white p-4 rounded-lg flex flex-col items-center">
+              <div className="flex items-center mb-4">
+                <GiTomato className="text-5xl mr-2 text-red-600" />
+                <h2 className="text-xl font-semibold">
+                  Welcome to Tomato Game
+                </h2>
+              </div>
+              {/* Username Input */}
+              <div className="mb-4">
+                <label className="block mb-1">Please enter username</label>
+                <input
+                  type="text"
+                  className="border rounded-md p-2 w-full"
+                  value={profileData.username}
+                  onChange={(e) =>
+                    setProfileData({ ...profileData, username: e.target.value })
+                  }
+                />
+              </div>
+              {/* Save Button */}
+              <div className="flex justify-end">
+                <button
+                  className="bg-green-500 text-white px-4 py-2 rounded-md"
+                  onClick={() => {
+                    setShowWelcomeDialog(false);
+                    handleProfileSave();
+                  }}
+                >
+                  Save
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Profile Popup Dialog */}
+        {profileOpen && (
+          <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50">
+            <div className="bg-white p-4 rounded-lg">
+              <h2 className="text-xl font-semibold mb-4">Edit Profile</h2>
+              {/* Profile Image Upload Section */}
+              <div className="flex justify-center items-center mb-4">
+                <div className="relative overflow-hidden w-24 h-24 rounded-full bg-gray-200">
+                  {profileImage && (
+                    <img
+                      src={profileImage}
+                      alt="Profile"
+                      className="object-cover w-full h-full"
+                    />
+                  )}
+                  <input
+                    type="file"
+                    className="opacity-0 absolute inset-0 w-full h-full cursor-pointer"
+                    onChange={handleProfileImageChange}
+                  />
+                </div>
+              </div>
+              {/* Username and Email Inputs */}
+              <div className="mb-4">
+                <label className="block mb-1">Username</label>
+                <input
+                  type="text"
+                  className="border rounded-md p-2 w-full"
+                  value={profileData.username}
+                  onChange={(e) =>
+                    setProfileData({ ...profileData, username: e.target.value })
+                  }
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block mb-1">Email</label>
+                <input
+                  type="email"
+                  className="border rounded-md p-2 w-full"
+                  value={profileData.email}
+                  onChange={(e) =>
+                    setProfileData({ ...profileData, email: e.target.value })
+                  }
+                />
+              </div>
+              {/* Save and Cancel Buttons */}
+              <div className="flex justify-end">
+                <button
+                  className="bg-blue-500 text-white px-4 py-2 rounded-md mr-2"
+                  onClick={() => setProfileOpen(false)}
+                >
+                  Cancel
+                </button>
+                <button
+                  className="bg-green-500 text-white px-4 py-2 rounded-md"
+                  onClick={handleProfileSave}
+                >
+                  Save Changes
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

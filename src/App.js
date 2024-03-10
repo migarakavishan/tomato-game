@@ -8,6 +8,7 @@ import { AuthProvider } from "./contexts/authContext/index";
 import HomePage from "./components/HomePage";
 import MenuPage from "./components/MenuPage";
 
+
 function App() {
   const [loading, setLoading] = useState(true);
 
@@ -33,6 +34,7 @@ function App() {
             <Route path="register" element={<SignUp />} />
             <Route path="play" element={<TomatoGame />} />
             <Route path="home" element={<HomePage />} />
+            
           </Routes>
         )}
       </Router>
