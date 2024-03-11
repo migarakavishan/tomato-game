@@ -140,14 +140,14 @@ function TomatoGame() {
                     onClick={handleRestart}
                   >
                     <FaRedo className="mr-2" />
-                    Restart
+                    
                   </button>
                   <button
                     className="mt-4 py-2 px-4 rounded-full bg-white text-slate-700 border-4 border-teal-950 font-bold text-2xl cursor-pointer hover:bg-teal-950 hover:text-white hover:border-teal-600"
                     onClick={() => navigate("/home")}
                   >
                     <FaHome className="mr-2" />
-                    Home
+                    
                   </button>
                 </div>
               </div>
@@ -160,20 +160,20 @@ function TomatoGame() {
                 <p className="text-2xl text-black">
                   You got a new highest score: {score}
                 </p>
-                <div className="flex justify-center items-center">
+                <div className="flex justify-center space-x-5">
                   <button
                     className="mt-4 py-2 px-4 rounded-full bg-white text-slate-700 border-4 border-teal-950 font-bold text-2xl cursor-pointer hover:bg-teal-950 hover:text-white hover:border-teal-600"
                     onClick={handleRestart}
                   >
                     <FaRedo className="mr-2" />
-                    Restart
+                    
                   </button>
                   <button
                     className="mt-4 py-2 px-4 rounded-full bg-white text-slate-700 border-4 border-teal-950 font-bold text-2xl cursor-pointer hover:bg-teal-950 hover:text-white hover:border-teal-600"
                     onClick={() => navigate("/home")}
                   >
                     <FaHome className="mr-2" />
-                    Home
+                    
                   </button>
                 </div>
               </div>
