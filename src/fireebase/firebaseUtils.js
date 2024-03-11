@@ -1,4 +1,3 @@
-// firebaseUtils.js
 
 import { getDatabase, ref, set, get } from "firebase/database";
 
@@ -14,6 +13,7 @@ export const saveProfileToDatabase = async (profileData, currentUser) => {
     await set(userRef, {
       username: profileData.username,
       profileImage: profileData.profileImage,
+      highestScore: profileData.highestScore
     });
   } catch (error) {
     console.error("Error saving profile data:", error);
@@ -39,3 +39,4 @@ export const fetchUsernameFromDatabase = async (currentUser) => {
     throw error; // Propagate the error to the caller
   }
 };
+
