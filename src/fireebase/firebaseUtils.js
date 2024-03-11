@@ -13,7 +13,6 @@ export const saveProfileToDatabase = async (profileData, currentUser) => {
     await set(userRef, {
       username: profileData.username,
       profileImage: profileData.profileImage,
-      highestScore: profileData.highestScore
     });
   } catch (error) {
     console.error("Error saving profile data:", error);
