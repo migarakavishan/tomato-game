@@ -1,7 +1,5 @@
 
 import { getDatabase, ref, set, get } from "firebase/database";
-
-
 // Function to save profile data to Firebase Realtime Database
 export const saveProfileToDatabase = async (profileData, currentUser) => {
   try {
@@ -13,6 +11,7 @@ export const saveProfileToDatabase = async (profileData, currentUser) => {
     await set(userRef, {
       username: profileData.username,
       profileImage: profileData.profileImage,
+      score: profileData.score,
     });
   } catch (error) {
     console.error("Error saving profile data:", error);

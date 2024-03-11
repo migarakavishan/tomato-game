@@ -1,6 +1,6 @@
 import { Menu, Transition } from "@headlessui/react";
 import classNames from "classnames";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from 'react-router-dom'
 import React, { Fragment, useState, useEffect } from "react";
 import { FaAward } from "react-icons/fa";
 import { useAuth } from "../contexts/authContext/index";
@@ -142,7 +142,7 @@ function HomePage() {
                             active && "bg-slate-500 rounded-2xl",
                             "text-gray-100 focus:bg-gray-200 cursor-pointer round-2xl px-4 py-2"
                           )}
-                          onClick={() => navigate("/settings")}
+                          
                         >
                           Settings
                         </div>
@@ -193,7 +193,7 @@ function HomePage() {
             className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-8 px-9 rounded-full text-6xl"
             onClick={() => navigate("/play")}
           >
-            PLAY
+            <Link to={'/play'} className="text-blue-200">Play</Link>
           </button>
         </div>
 

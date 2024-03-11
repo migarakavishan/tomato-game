@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { FaHeart, FaHome, FaRedo } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/authContext/index";
+import { fetchUsernameFromDatabase } from "../fireebase/firebaseUtils";
 
 function TomatoGame() {
+  const { currentUser } = useAuth();
   const [gameImage, setGameImage] = useState("");
   const [solution, setSolution] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -13,10 +16,12 @@ function TomatoGame() {
   const [remainingHearts, setRemainingHearts] = useState(3);
   const [showGameOver, setShowGameOver] = useState(false);
   const [showHighScore, setShowHighScore] = useState(false);
+  const [username, setUsername] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
     fetchGame();
+    fetchUsername();
   }, []);
 
   useEffect(() => {
@@ -45,7 +50,18 @@ function TomatoGame() {
       console.error("Error fetching game data:", error);
     }
   };
-  
+
+  const fetchUsername = () => {
+    if (currentUser) {
+      fetchUsernameFromDatabase(currentUser)
+        .then((username) => {
+          setUsername(username);
+        })
+        .catch((error) => {
+          console.error("Error fetching username:", error);
+        });
+    }
+  };
 
   const handleNumberClick = (number) => {
     if (number === solution) {
@@ -76,13 +92,16 @@ function TomatoGame() {
     fetchGame();
   };
 
-  
   return (
     <div className="h-screen flex justify-center items-center">
       <div className="box-content border-blue-200 h-5/6 w-4/6 p-4 border-8 flex justify-center bg-slate-700">
         <div className="flex flex-col justify-center items-center ">
           {!isLoading && !showGameOver && !showHighScore && (
             <>
+              <div className="text-white mb-4 text-2xl">
+                <p>Welcome, {username || "Guest"}</p>{" "}
+                {/* Display current user's username */}
+              </div>
               <div className="flex flex-row space-x-52">
                 <div className="text-white mb-4 ">
                   <p>Score: {score}</p>
@@ -140,14 +159,12 @@ function TomatoGame() {
                     onClick={handleRestart}
                   >
                     <FaRedo className="mr-2" />
-                    
                   </button>
                   <button
                     className="mt-4 py-2 px-4 rounded-full bg-white text-slate-700 border-4 border-teal-950 font-bold text-2xl cursor-pointer hover:bg-teal-950 hover:text-white hover:border-teal-600"
                     onClick={() => navigate("/home")}
                   >
                     <FaHome className="mr-2" />
-                    
                   </button>
                 </div>
               </div>
@@ -166,14 +183,12 @@ function TomatoGame() {
                     onClick={handleRestart}
                   >
                     <FaRedo className="mr-2" />
-                    
                   </button>
                   <button
                     className="mt-4 py-2 px-4 rounded-full bg-white text-slate-700 border-4 border-teal-950 font-bold text-2xl cursor-pointer hover:bg-teal-950 hover:text-white hover:border-teal-600"
                     onClick={() => navigate("/home")}
                   >
                     <FaHome className="mr-2" />
-                    
                   </button>
                 </div>
               </div>
