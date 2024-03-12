@@ -1,6 +1,6 @@
 import { Menu, Transition } from "@headlessui/react";
 import classNames from "classnames";
-import { useNavigate, Link } from 'react-router-dom'
+import { useNavigate, Link } from "react-router-dom";
 import React, { Fragment, useState, useEffect } from "react";
 import { FaAward } from "react-icons/fa";
 import { useAuth } from "../contexts/authContext/index";
@@ -9,7 +9,7 @@ import { MdLeaderboard } from "react-icons/md";
 import {
   saveProfileToDatabase,
   fetchUsernameFromDatabase,
-  fetchHighscoreFromDatabase
+  fetchHighscoreFromDatabase,
 } from "../fireebase/firebaseUtils";
 
 import { uploadProfileImageToStorage } from "../fireebase/forStroage";
@@ -28,7 +28,6 @@ function HomePage() {
   const navigate = useNavigate();
   const [profileImage, setProfileImage] = useState(null);
   const [showWelcomeDialog, setShowWelcomeDialog] = useState(false);
-  
 
   useEffect(() => {
     // Initialize profileData with the user's email when the component mounts
@@ -65,23 +64,19 @@ function HomePage() {
           console.error("Error fetching highscore:", error);
         });
     }
-    
   }, [currentUser, profileOpen]);
-
-  
-  
 
   const handleProfileSave = () => {
     // Save profile data to Firebase Realtime Database
     saveProfileToDatabase(profileData, currentUser)
       .then(() => {
         console.log("Profile data saved to database:", profileData);
-  
+
         // Check if the username is newly created
         if (!profileData.username) {
           // If username is newly created, set the highscore to 0
           const newProfileData = { ...profileData, highscore: 0 };
-  
+
           // Save the updated profile data with highscore to the database
           saveProfileToDatabase(newProfileData, currentUser)
             .then(() => {
@@ -90,7 +85,10 @@ function HomePage() {
               setProfileOpen(false);
             })
             .catch((error) => {
-              console.error("Error setting highscore for newly created username:", error);
+              console.error(
+                "Error setting highscore for newly created username:",
+                error
+              );
             });
         } else {
           // Close the profile dialog after saving changes
@@ -101,7 +99,6 @@ function HomePage() {
         console.error("Error saving profile data:", error);
       });
   };
-  
 
   const handleProfileImageChange = async (e) => {
     const file = e.target.files[0];
@@ -178,7 +175,6 @@ function HomePage() {
                             active && "bg-slate-500 rounded-2xl",
                             "text-gray-100 focus:bg-gray-200 cursor-pointer round-2xl px-4 py-2"
                           )}
-                          
                         >
                           Settings
                         </div>
@@ -219,7 +215,9 @@ function HomePage() {
 
           <div className="pl-3 pt-3 pb-3 rounded-2xl bg-slate-400 text-white pr-1">
             <div className="flex justify-center items-center bg-gray-500 rounded-full h-10 w-10  mr-2">
-              <MdLeaderboard className="text-2xl" />
+              <Link to={"/leaderboard"}>
+                <MdLeaderboard className="text-2xl" />
+              </Link>
             </div>
           </div>
         </div>
@@ -229,7 +227,9 @@ function HomePage() {
             className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-8 px-9 rounded-full text-6xl"
             onClick={() => navigate("/play")}
           >
-            <Link to={'/play'} className="text-blue-200">Play</Link>
+            <Link to={"/play"} className="text-blue-200">
+              Play
+            </Link>
           </button>
         </div>
 

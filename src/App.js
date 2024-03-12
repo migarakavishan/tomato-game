@@ -7,6 +7,8 @@ import SignUp from "./components/Signup";
 import { AuthProvider } from "./contexts/authContext/index";
 import HomePage from "./components/HomePage";
 import MenuPage from "./components/MenuPage";
+import LeaderboardPage from "./components/LeaderboardPage";
+
 
 
 function App() {
@@ -34,6 +36,7 @@ function App() {
             <Route path="register" element={<SignUp />} />
             <Route path="play" element={<TomatoGame />} />
             <Route path="home" element={<HomePage />} />
+            <Route path="leaderboard" element={<LeaderboardPage />} />
             
           </Routes>
         )}
