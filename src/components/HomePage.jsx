@@ -9,6 +9,7 @@ import { MdLeaderboard } from "react-icons/md";
 import {
   saveProfileToDatabase,
   fetchUsernameFromDatabase,
+  fetchHighscoreFromDatabase
 } from "../fireebase/firebaseUtils";
 
 import { uploadProfileImageToStorage } from "../fireebase/forStroage";
@@ -21,11 +22,13 @@ function HomePage() {
     username: "",
     email: "",
     profileImage: "",
+    highscore: 0,
   });
   const { currentUser } = useAuth();
   const navigate = useNavigate();
   const [profileImage, setProfileImage] = useState(null);
   const [showWelcomeDialog, setShowWelcomeDialog] = useState(false);
+  
 
   useEffect(() => {
     // Initialize profileData with the user's email when the component mounts
@@ -52,20 +55,53 @@ function HomePage() {
           console.error("Error fetching username:", error);
         });
     }
+    if (currentUser) {
+      fetchHighscoreFromDatabase(currentUser)
+        .then((highscore) => {
+          // Update the highscore state
+          setProfileData((prevData) => ({ ...prevData, highscore }));
+        })
+        .catch((error) => {
+          console.error("Error fetching highscore:", error);
+        });
+    }
+    
   }, [currentUser, profileOpen]);
+
+  
+  
 
   const handleProfileSave = () => {
     // Save profile data to Firebase Realtime Database
     saveProfileToDatabase(profileData, currentUser)
       .then(() => {
         console.log("Profile data saved to database:", profileData);
-        // Close the profile dialog after saving changes
-        setProfileOpen(false);
+  
+        // Check if the username is newly created
+        if (!profileData.username) {
+          // If username is newly created, set the highscore to 0
+          const newProfileData = { ...profileData, highscore: 0 };
+  
+          // Save the updated profile data with highscore to the database
+          saveProfileToDatabase(newProfileData, currentUser)
+            .then(() => {
+              console.log("Highscore set to 0 for newly created username.");
+              // Close the profile dialog after saving changes
+              setProfileOpen(false);
+            })
+            .catch((error) => {
+              console.error("Error setting highscore for newly created username:", error);
+            });
+        } else {
+          // Close the profile dialog after saving changes
+          setProfileOpen(false);
+        }
       })
       .catch((error) => {
         console.error("Error saving profile data:", error);
       });
   };
+  
 
   const handleProfileImageChange = async (e) => {
     const file = e.target.files[0];
@@ -176,7 +212,7 @@ function HomePage() {
               <FaAward />
             </div>
             <div className="flex flex-col mb-2">
-              <div className="text-lg">5000</div>
+              <div className="text-lg">{profileData.highscore}</div>
               <div className="text-xs">Highscore</div>
             </div>
           </div>

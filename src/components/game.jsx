@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { FaHeart, FaHome, FaRedo } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/authContext/index";
-import { fetchUsernameFromDatabase } from "../fireebase/firebaseUtils";
+import { fetchUsernameFromDatabase, saveHighscoreToDatabase,saveProfileToDatabase, fetchHighscoreFromDatabase} from "../fireebase/firebaseUtils";
 
 function TomatoGame() {
   const { currentUser } = useAuth();
@@ -28,11 +28,27 @@ function TomatoGame() {
     if (remainingHearts === 0 || seconds === 0) {
       setShowGameOver(true);
       if (score > highestScore) {
+        // Update highest score state
         setHighestScore(score);
         setShowHighScore(true);
+  
+        if (currentUser && score > highestScore) {
+          // Save the new highscore to the database
+          saveHighscoreToDatabase(currentUser, score)
+            .then(() => {
+              console.log("Highscore saved to the database:", score);
+              // If high score is updated, update user's profile data
+              saveProfileToDatabase({ username, highscore: score,}, currentUser);
+            })
+            .catch((error) => {
+              console.error("Error saving highscore:", error);
+            });
+        }
       }
     }
   }, [remainingHearts, seconds]);
+  
+  
 
   const fetchGame = async () => {
     setIsLoading(true);
@@ -53,15 +69,18 @@ function TomatoGame() {
 
   const fetchUsername = () => {
     if (currentUser) {
-      fetchUsernameFromDatabase(currentUser)
-        .then((username) => {
-          setUsername(username);
-        })
-        .catch((error) => {
-          console.error("Error fetching username:", error);
-        });
+      Promise.all([
+        fetchUsernameFromDatabase(currentUser),
+        fetchHighscoreFromDatabase(currentUser)
+      ]).then(([username, highscore]) => {
+        setUsername(username);
+        setHighestScore(highscore);
+      }).catch((error) => {
+        console.error("Error fetching data:", error);
+      });
     }
   };
+  
 
   const handleNumberClick = (number) => {
     if (number === solution) {
@@ -175,7 +194,7 @@ function TomatoGame() {
               <div className="bg-white p-8 rounded-lg text-center">
                 <p className="text-4xl text-black">Congratulations!</p>
                 <p className="text-2xl text-black">
-                  You got a new highest score: {score}
+                  You got a new highest score: {highestScore}
                 </p>
                 <div className="flex justify-center space-x-5">
                   <button
