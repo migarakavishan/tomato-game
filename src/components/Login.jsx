@@ -50,7 +50,7 @@ function Login() {
                 type={showPassword ? "text" : "password"}
                 id="password"
                 className="w-full px-3 py-2 pl-10 border rounded-2xl focus:outline-none "
-                placeholder="Enter your password"
+                placeholder="Enter password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />

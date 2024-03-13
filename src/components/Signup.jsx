@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import {  FaEye, FaEyeSlash } from "react-icons/fa";
 import { IoIosLock } from "react-icons/io";
 import { IoIosMail } from "react-icons/io";
-import { Navigate } from 'react-router-dom';
+import { Navigate, Link } from 'react-router-dom'
 import { useAuth } from '../contexts/authContext/index';
 import { doCreateUserWithEmailAndPassword } from '../fireebase/auth';
 
@@ -52,7 +52,7 @@ function SignUp() {
                 type={showPassword ? "text" : "password"}
                 id="password"
                 className="w-full px-3 py-2 pl-10 border rounded-2xl focus:outline-none"
-                placeholder="Enter your password"
+                placeholder="Enter password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
@@ -74,7 +74,7 @@ function SignUp() {
                 type={showPassword ? "text" : "password"}
                 id="confirmPassword"
                 className="w-full px-3 py-2 pl-10 border rounded-2xl focus:outline-none"
-                placeholder="Confirm your password"
+                placeholder="Confirm password"
                 value={confirmPassword}
                 onChange={(e) => setconfirmPassword(e.target.value)}
               />
@@ -100,10 +100,11 @@ function SignUp() {
           </form>
           <div className="mt-4 text-center">
             <p className="text-white font-medium">
-              I have an account? <a href="/login" className="text-blue-200">Sign in</a>
+              I have an account?<Link to={'/login'} className="text-blue-200">Sign in</Link>
             </p>
           </div>
         </div>
+        
       </div>
     </div>
   );
