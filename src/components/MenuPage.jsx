@@ -131,7 +131,7 @@ function MenuPage() {
             style={{ width: "150px" }} // Adjust the width as needed
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
-            onClick={() => navigate("/play")}
+            onClick={() => navigate("/guestgame")}
           >
             Guest
           </motion.button>

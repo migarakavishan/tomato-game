@@ -8,6 +8,7 @@ import { AuthProvider } from "./contexts/authContext/index";
 import HomePage from "./components/HomePage";
 import MenuPage from "./components/MenuPage";
 import LeaderboardPage from "./components/LeaderboardPage";
+import TomatoGameGuest from "./components/gameGuest";
 
 
 
@@ -37,6 +38,7 @@ function App() {
             <Route path="play" element={<TomatoGame />} />
             <Route path="home" element={<HomePage />} />
             <Route path="leaderboard" element={<LeaderboardPage />} />
+            <Route path="guestgame" element={<TomatoGameGuest/>}/>
             
           </Routes>
         )}

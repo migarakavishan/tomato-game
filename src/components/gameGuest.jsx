@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { FaHeart, FaHome, FaRedo } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
-function TomatoGame() {
+function TomatoGameGuest() {
   const [gameImage, setGameImage] = useState("");
   const [solution, setSolution] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -185,4 +185,4 @@ function TomatoGame() {
   );
 }
 
-export default TomatoGame;
+export default TomatoGameGuest;
