@@ -227,7 +227,7 @@ function HomePage() {
             className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-8 px-9 rounded-full text-6xl"
             onClick={() => navigate("/play")}
           >
-            <Link to={"/play"} className="text-blue-200">
+            <Link to={"/play"} className="text-blue-100">
               Play
             </Link>
           </button>

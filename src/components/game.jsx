@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { FaHeart, FaHome, FaRedo } from "react-icons/fa";
+import { FaHeart, FaHome, FaRedo, FaArrowLeft } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/authContext/index";
-import { fetchUsernameFromDatabase, saveHighscoreToDatabase,saveProfileToDatabase, fetchHighscoreFromDatabase} from "../fireebase/firebaseUtils";
+import { fetchUsernameFromDatabase, saveHighscoreToDatabase, saveProfileToDatabase, fetchHighscoreFromDatabase } from "../fireebase/firebaseUtils";
 
 function TomatoGame() {
   const { currentUser } = useAuth();
@@ -31,14 +31,14 @@ function TomatoGame() {
         // Update highest score state
         setHighestScore(score);
         setShowHighScore(true);
-  
+
         if (currentUser && score > highestScore) {
           // Save the new highscore to the database
           saveHighscoreToDatabase(currentUser, score)
             .then(() => {
               console.log("Highscore saved to the database:", score);
               // If high score is updated, update user's profile data
-              saveProfileToDatabase({ username, highscore: score,}, currentUser);
+              saveProfileToDatabase({ username, highscore: score, }, currentUser);
             })
             .catch((error) => {
               console.error("Error saving highscore:", error);
@@ -47,8 +47,6 @@ function TomatoGame() {
       }
     }
   }, [remainingHearts, seconds]);
-  
-  
 
   const fetchGame = async () => {
     setIsLoading(true);
@@ -80,7 +78,6 @@ function TomatoGame() {
       });
     }
   };
-  
 
   const handleNumberClick = (number) => {
     if (number === solution) {
@@ -113,7 +110,8 @@ function TomatoGame() {
 
   return (
     <div className="h-screen flex justify-center items-center">
-      <div className="box-content border-blue-200 h-5/6 w-4/6 p-4 border-8 flex justify-center bg-slate-700">
+      <div className="box-content border-blue-200 h-5/6 w-4/6 p-4 border-8 flex justify-center bg-slate-700 relative">
+        <FaArrowLeft className="absolute top-0 left-0 text-white mt-8 ml-8 cursor-pointer text-2xl" onClick={() => navigate("/home")} />
         <div className="flex flex-col justify-center items-center ">
           {!isLoading && !showGameOver && !showHighScore && (
             <>
@@ -155,9 +153,9 @@ function TomatoGame() {
               </div>
               {isCorrect !== null && (
                 <p
-                  className={`text-center text-${
+                  className={`text-center text-2xl text-${
                     isCorrect ? "green" : "red"
-                  }-500`}
+                    }-500`}
                 >
                   {isCorrect ? "Correct!" : "Incorrect!"}
                 </p>

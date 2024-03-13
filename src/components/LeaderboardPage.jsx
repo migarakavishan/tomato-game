@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { db } from "../fireebase/firebase";
 import { get, ref } from "firebase/database";
-import { FaAward } from "react-icons/fa";
+import { FaAward, FaArrowLeft } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 function LeaderboardPage() {
   const [data, setData] = useState(null);
@@ -38,7 +39,10 @@ function LeaderboardPage() {
 
   return (
     <div className="h-screen flex justify-center items-center">
-      <div className="box-content border-blue-200 h-5/6 w-4/6 pt-20 border-8 justify-center items-center bg-slate-700">
+      <div className="box-content border-blue-200 h-5/6 w-4/6 pt-20 border-8 justify-center items-center bg-slate-700 relative">
+        <Link to="/home" className="absolute top-0 left-0 mt-8 ml-8 text-white text-2xl">
+          <FaArrowLeft />
+        </Link>
         <div className="text-white text-2xl flex flex-row items-center justify-center space-x-3">
           <FaAward className="mb-3"/>
           <h1 className="text-3xl font-bold mb-4">Leaderboard</h1>
@@ -70,7 +74,7 @@ function LeaderboardPage() {
                     </div>
                   </td>
                   <td className="px-4 py-2 text-white font-semibold">
-                    {item.highscore}
+                    {item.highscore} points
                   </td>
                 </tr>
               ))}
