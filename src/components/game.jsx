@@ -18,6 +18,7 @@ function TomatoGame() {
   const [showGameOver, setShowGameOver] = useState(false);
   const [showHighScore, setShowHighScore] = useState(false);
   const [username, setUsername] = useState("");
+  const [rounds, setRounds] = useState(0);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -29,18 +30,14 @@ function TomatoGame() {
     if (remainingHearts === 0 || seconds === 0) {
       setShowGameOver(true);
       if (score > highestScore) {
-        // Update highest score state
         setHighestScore(score);
         setShowHighScore(true);
 
         if (currentUser && score > highestScore) {
-          // Save the new highscore to the database
           saveHighscoreToDatabase(currentUser, score)
             .then(() => {
               console.log("Highscore saved to the database:", score);
-              // If high score is updated, update user's profile data
               saveProfileToDatabase({ username, highscore: score, }, currentUser);
-              // sendEmail(currentUser.email,currentUser.score,currentUser.username);
             })
             .catch((error) => {
               console.error("Error saving highscore:", error);
@@ -49,6 +46,17 @@ function TomatoGame() {
       }
     }
   }, [remainingHearts, seconds]);
+
+  useEffect(() => {
+    if (seconds > 0 && !showGameOver) {
+      const timer = setTimeout(() => {
+        setSeconds(seconds - 1);
+      }, 1000);
+      return () => clearTimeout(timer);
+    } else if (showGameOver) {
+      setSeconds(30);
+    }
+  }, [seconds, showGameOver]);
 
   const fetchGame = async () => {
     setIsLoading(true);
@@ -61,7 +69,11 @@ function TomatoGame() {
       setGameImage(base64Image);
       setSolution(parseInt(solution));
       setIsLoading(false);
-      setSeconds(30); // Reset timer
+      setSeconds(seconds => {
+        if (2 > rounds) return 30;
+        else if (4 > rounds) return 25;
+        else return 15;
+      });
     } catch (error) {
       console.error("Error fetching game data:", error);
     }
@@ -86,20 +98,12 @@ function TomatoGame() {
       setIsCorrect(true);
       setScore(score + 1);
       fetchGame();
+      setRounds(rounds + 1);
     } else {
       setIsCorrect(false);
       setRemainingHearts(remainingHearts - 1);
     }
   };
-
-  useEffect(() => {
-    if (seconds > 0 && !showGameOver) {
-      const timer = setTimeout(() => {
-        setSeconds(seconds - 1);
-      }, 1000);
-      return () => clearTimeout(timer);
-    }
-  }, [seconds, showGameOver]);
 
   const handleRestart = () => {
     setShowGameOver(false);
@@ -107,6 +111,7 @@ function TomatoGame() {
     setSeconds(30);
     setRemainingHearts(3);
     setScore(0);
+    setRounds(0);
     fetchGame();
   };
 
@@ -119,7 +124,6 @@ function TomatoGame() {
             <>
               <div className="text-white mb-4 text-2xl">
                 <p>Welcome, {username || "Guest"}</p>{" "}
-                {/* Display current user's username */}
               </div>
               <div className="flex flex-row space-x-52">
                 <div className="text-white mb-4 ">
