@@ -7,12 +7,12 @@ import { getDatabase } from "firebase/database";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyA14owRvy81cNHN-kn55Bh0-E1_sCcpbMw",
-  authDomain: "tomatogame-f0b4b.firebaseapp.com",
-  projectId: "tomatogame-f0b4b",
-  storageBucket: "tomatogame-f0b4b.appspot.com",
-  messagingSenderId: "1085879190243",
-  appId: "1:1085879190243:web:5a680fa72dcd0655923bd6"
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_FIREBASE_APP_ID
 };
 
 // Initialize Firebase
