@@ -3,7 +3,8 @@ import { FaHeart, FaHome, FaRedo, FaArrowLeft } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/authContext/index";
 import { fetchUsernameFromDatabase, saveHighscoreToDatabase, saveProfileToDatabase, fetchHighscoreFromDatabase } from "../fireebase/firebaseUtils";
-// import { sendEmail } from "../EmailHandle/emailHandler";
+
+
 
 function TomatoGame() {
   const { currentUser } = useAuth();
@@ -38,6 +39,7 @@ function TomatoGame() {
             .then(() => {
               console.log("Highscore saved to the database:", score);
               saveProfileToDatabase({ username, highscore: score, }, currentUser);
+              // sendHighScoreEmail(currentUser.email, score);
             })
             .catch((error) => {
               console.error("Error saving highscore:", error);
@@ -114,6 +116,7 @@ function TomatoGame() {
     setRounds(0);
     fetchGame();
   };
+
 
   return (
     <div className="h-screen flex justify-center items-center">

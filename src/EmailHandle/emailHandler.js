@@ -1,36 +1,14 @@
-// const nodemailer = require('nodemailer');
+// const nodemailer = require("nodemailer");
 
+// // Create a transporter using SMTP
 // const transporter = nodemailer.createTransport({
-//   service: 'gmail',
+//   host: "smtp.gmail.com",
+//   port: 587, // or the port your SMTP server uses
+//   secure: false, // true for 465, false for other ports
 //   auth: {
-//     user: 'gametomato2@gmail.com', // Your Gmail email address
-//     pass: 'jdjo rsmg siac ojoa', // Your Gmail password or app password
+//     user: "gametomato2@gmail.com",
+//     pass: "myxx ennf nsfw hdnz",
 //   },
 // });
 
-// const sendEmail = (toEmail, score, username) => {
-//   const mailOptions = {
-//     from: 'gametomato2@gmail.com',
-//     to: toEmail,
-//     subject: '🚀 Congratulations! You\'ve set a new high score in the Tomato Game! 🍅',
-//     html: `
-//       <h1>Congratulations, ${username}!</h1>
-//       <p>You've achieved a new high score in the Tomato Game!</p>
-//       <p>Your High Score: ${score}</p>
-//       <p>Keep up the fantastic work and continue to dominate the game leaderboard.</p>
-//       <p>Keep playing, keep winning, and most importantly, have fun!</p>
-//       <p>Best regards,</p>
-//       <p>Tomato Game</p>
-//     `
-//   };
-
-//   transporter.sendMail(mailOptions, function (error, info) {
-//     if (error) {
-//       console.error('Error sending email:', error);
-//     } else {
-//       console.log('Email sent:', info.response);
-//     }
-//   });
-// };
-
-// module.exports = { sendEmail };
+// module.exports = { transporter };

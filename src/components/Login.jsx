@@ -4,7 +4,7 @@ import { IoIosLock } from "react-icons/io";
 import { IoIosMail } from "react-icons/io";
 import {useAuth} from '../contexts/authContext/index'
 import { Navigate, Link } from 'react-router-dom'
-import { doSignInWithEmailAndPassword} from '../fireebase/auth'
+import { doSignInWithEmailAndPassword, doPasswordReset} from '../fireebase/auth'
 
 function Login() {
 
@@ -14,6 +14,8 @@ function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [isSigningIn, setIsSigningIn] = useState(false)
   const [error, setError] = useState(null);
+  const [resetEmailSent, setResetEmailSent] = useState(false);
+
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -30,6 +32,15 @@ function Login() {
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
+  };
+
+  const handleResetPassword = async () => {
+    try {
+      await doPasswordReset(email);
+      setResetEmailSent(true);
+    } catch (error) {
+      setError("Error sending password reset email. Please try again.");
+    }
   };
 
   return (
@@ -81,6 +92,11 @@ function Login() {
               {isSigningIn ? 'Signing In...' : 'Sign In'}
             </button>
           </form>
+          {resetEmailSent ? (
+            <p className="text-green-700 text-md mt-10">Password reset email sent. Check your inbox.</p>
+          ) : (
+            <p className="text-blue-700 text-md cursor-pointer mt-10" onClick={handleResetPassword}>Forgot Password?</p>
+          )}
           <div className="mt-4 text-center">
             <p className="text-white font-medium">
               Don't have an account? <Link to={'/register'} className="text-blue-200">Sign up</Link>
