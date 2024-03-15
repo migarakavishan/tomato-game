@@ -14,16 +14,23 @@ function SignUp() {
   const [confirmPassword, setconfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isRegistering, setIsRegistering] = useState(false);
-
+  const [error, setError] = useState(null);
   const { userLoggedIn } = useAuth()
 
   const onSubmit = async (e) => {
-    e.preventDefault()
-    if(!isRegistering) {
-        setIsRegistering(true)
-        await doCreateUserWithEmailAndPassword(email, password)
+    e.preventDefault();
+    if (!isRegistering) {
+      setIsRegistering(true);
+      try {
+        const user = await doCreateUserWithEmailAndPassword(email, password);
+        console.log("User signed up successfully:", user);
+        // Redirect or show success message to the user
+      } catch (error) {
+        console.error("Error signing up:", error.message);
+        setError(error.message);
+      }
     }
-}
+  };
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -35,6 +42,7 @@ function SignUp() {
         <div className="max-w-md w-full p-8 h-5/6 bg-purple-400 shadow-md rounded-3xl flex flex-col justify-center items-center">
         {userLoggedIn && <Navigate to={"/home"} replace={true} />}
           <h2 className="text-2xl mb-4 text-white font-bold">Register</h2>
+          {error && <div className="text-red-500">{error}</div>}
           <form onSubmit={onSubmit} className="flex flex-col space-y-6 w-full">
             <div className="relative w-full">
               <input
