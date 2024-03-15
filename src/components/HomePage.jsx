@@ -168,18 +168,6 @@ function HomePage() {
                       )}
                     </Menu.Item>
 
-                    <Menu.Item>
-                      {({ active }) => (
-                        <div
-                          className={classNames(
-                            active && "bg-slate-500 rounded-2xl",
-                            "text-gray-100 focus:bg-gray-200 cursor-pointer round-2xl px-4 py-2"
-                          )}
-                        >
-                          Settings
-                        </div>
-                      )}
-                    </Menu.Item>
 
                     <Menu.Item>
                       {({ active }) => (

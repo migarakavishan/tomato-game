@@ -39,7 +39,7 @@ function TomatoGame() {
             .then(() => {
               console.log("Highscore saved to the database:", score);
               saveProfileToDatabase({ username, highscore: score, }, currentUser);
-              // sendHighScoreEmail(currentUser.email, score);
+              
             })
             .catch((error) => {
               console.error("Error saving highscore:", error);
