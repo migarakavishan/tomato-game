@@ -23,7 +23,7 @@ function MenuPage() {
               className="text-slate-700"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 0.5, delay: 1 }}
+              transition={{ duration: 0.5, delay: 0.5 }}
             >
               T
             </motion.span>
@@ -31,7 +31,7 @@ function MenuPage() {
               className="text-slate-700"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 0.5, delay: 1.2 }}
+              transition={{ duration: 0.5, delay: 0.5 }}
             >
               o
             </motion.span>
@@ -39,7 +39,7 @@ function MenuPage() {
               className="text-slate-700"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 0.5, delay: 1.4 }}
+              transition={{ duration: 0.5, delay: 0.5 }}
             >
               m
             </motion.span>
@@ -47,7 +47,7 @@ function MenuPage() {
               className="text-slate-700"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 0.5, delay: 1.6 }}
+              transition={{ duration: 0.5, delay: 0.5 }}
             >
               a
             </motion.span>
@@ -55,7 +55,7 @@ function MenuPage() {
               className="text-slate-700"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 0.5, delay: 1.8 }}
+              transition={{ duration: 0.5, delay: 0.5 }}
             >
               t
             </motion.span>
@@ -63,7 +63,7 @@ function MenuPage() {
               className="text-slate-700"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 0.5, delay: 2 }}
+              transition={{ duration: 0.5, delay: 0.5 }}
             >
               o
             </motion.span>
@@ -72,7 +72,7 @@ function MenuPage() {
             className="text-slate-800"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: 2.2 }}
+            transition={{ duration: 0.5, delay: 0.5 }}
           >
             G
           </motion.span>
@@ -80,7 +80,7 @@ function MenuPage() {
             className="text-slate-800"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: 2.4 }}
+            transition={{ duration: 0.5, delay: 0.5 }}
           >
             a
           </motion.span>
@@ -88,7 +88,7 @@ function MenuPage() {
             className="text-slate-800"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: 2.6 }}
+            transition={{ duration: 0.5, delay: 0.5 }}
           >
             m
           </motion.span>
@@ -96,46 +96,35 @@ function MenuPage() {
             className="text-slate-800"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: 2.8 }}
+            transition={{ duration: 0.5, delay: 0.5 }}
           >
             e
           </motion.span>
         </motion.div>
 
-        <motion.div
-          className="flex flex-col justify-center items-center space-y-4"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 3 }}
-        >
-          <motion.button
+        <div className="flex flex-col justify-center items-center space-y-4">
+          <button
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-5 rounded"
             style={{ width: "150px" }} // Adjust the width as needed
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }} 
             onClick={() => navigate("/login")}
           >
             Login
-          </motion.button>
-          <motion.button
+          </button>
+          <button
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
             style={{ width: "150px" }} // Adjust the width as needed
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
             onClick={() => navigate("/register")}
           >
             Register
-          </motion.button>
-          <motion.button
+          </button>
+          <button
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
             style={{ width: "150px" }} // Adjust the width as needed
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
             onClick={() => navigate("/guestgame")}
           >
             Guest
-          </motion.button>
-        </motion.div>
+          </button>
+        </div>
       </div>
     </div>
   );
