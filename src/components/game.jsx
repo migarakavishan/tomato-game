@@ -3,8 +3,9 @@ import { FaHeart, FaHome, FaRedo, FaArrowLeft } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/authContext/index";
 import { fetchUsernameFromDatabase, saveHighscoreToDatabase, saveProfileToDatabase, fetchHighscoreFromDatabase } from "../fireebase/firebaseUtils";
-
-
+import { Howl, Howler } from 'howler'; // Import Howler
+import clickSoundUrl from '../assets/click1.wav'; // Import click sound URL
+import gameOverSoundUrl from '../assets/gameover.wav'; // Import game over sound URL
 
 function TomatoGame() {
   const { currentUser } = useAuth();
@@ -21,6 +22,16 @@ function TomatoGame() {
   const [username, setUsername] = useState("");
   const [rounds, setRounds] = useState(0);
   const navigate = useNavigate();
+
+  const clickSound = new Howl({
+    src: [clickSoundUrl],
+    volume: 0.5, // Adjust the volume as needed
+  });
+
+  const gameOverSound = new Howl({
+    src: [gameOverSoundUrl],
+    volume: 0.5, // Adjust the volume as needed
+  });
 
   useEffect(() => {
     fetchGame();
@@ -39,12 +50,14 @@ function TomatoGame() {
             .then(() => {
               console.log("Highscore saved to the database:", score);
               saveProfileToDatabase({ username, highscore: score, }, currentUser);
-              
             })
             .catch((error) => {
               console.error("Error saving highscore:", error);
             });
         }
+
+        // Play game over sound
+        gameOverSound.play();
       }
     }
   }, [remainingHearts, seconds]);
@@ -57,6 +70,11 @@ function TomatoGame() {
       return () => clearTimeout(timer);
     } else if (showGameOver) {
       setSeconds(30);
+    }
+
+
+    if (showGameOver || showHighScore) {
+      gameOverSound.play();
     }
   }, [seconds, showGameOver]);
 
@@ -96,6 +114,8 @@ function TomatoGame() {
   };
 
   const handleNumberClick = (number) => {
+    clickSound.play(); // Play click sound
+
     if (number === solution) {
       setIsCorrect(true);
       setScore(score + 1);
@@ -108,6 +128,8 @@ function TomatoGame() {
   };
 
   const handleRestart = () => {
+    clickSound.play(); // Play click sound
+
     setShowGameOver(false);
     setShowHighScore(false);
     setSeconds(30);
@@ -164,7 +186,7 @@ function TomatoGame() {
                 <p
                   className={`text-center text-2xl text-${
                     isCorrect ? "green" : "red"
-                    }-500`}
+                  }-500`}
                 >
                   {isCorrect ? "Correct!" : "Incorrect!"}
                 </p>
