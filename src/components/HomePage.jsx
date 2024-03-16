@@ -2,7 +2,7 @@ import { Menu, Transition } from "@headlessui/react";
 import classNames from "classnames";
 import { useNavigate, Link } from "react-router-dom";
 import React, { Fragment, useState, useEffect } from "react";
-import { FaAward } from "react-icons/fa";
+import { FaAward, FaVolumeMute, FaVolumeUp } from "react-icons/fa";
 import { useAuth } from "../contexts/authContext/index";
 import { doSignOut } from "../fireebase/auth";
 import { MdLeaderboard } from "react-icons/md";
@@ -14,6 +14,11 @@ import {
 
 import { uploadProfileImageToStorage } from "../fireebase/forStroage";
 import { GiTomato } from "react-icons/gi";
+
+import { Howl, Howler } from 'howler';
+
+import backgroundSoundUrl from  '../assets/bg.mp3';
+import clickSoundUrl from '../assets/click1.wav';
 
 function HomePage() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -28,6 +33,19 @@ function HomePage() {
   const navigate = useNavigate();
   const [profileImage, setProfileImage] = useState(null);
   const [showWelcomeDialog, setShowWelcomeDialog] = useState(false);
+  const [isMuted, setIsMuted] = useState(false);
+
+  const backgroundSound = new Howl({
+    src: [backgroundSoundUrl],
+    loop: true, // Loop the background sound
+    volume: 0.4, // Adjust the volume as needed
+    mute: isMuted, // Initial mute state
+  });
+
+  const clickSound = new Howl({
+    src: [clickSoundUrl],
+    volume: 0.5, // Adjust the volume as needed
+  });
 
   useEffect(() => {
     // Initialize profileData with the user's email when the component mounts
@@ -64,6 +82,15 @@ function HomePage() {
           console.error("Error fetching highscore:", error);
         });
     }
+
+    Howler.volume(0.5); // Set the global volume for Howler
+    backgroundSound.play();
+
+    return () => {
+      // Clean up by stopping the background sound when the component unmounts
+      backgroundSound.stop();
+    };
+
   }, [currentUser, profileOpen]);
 
   const handleProfileSave = () => {
@@ -110,6 +137,19 @@ function HomePage() {
     } catch (error) {
       console.error("Error uploading profile image:", error);
     }
+  };
+
+  const toggleMute = () => {
+    setIsMuted((prevMuted) => !prevMuted);
+    Howler.mute(isMuted); // Mute or unmute Howler.js globally
+  };
+
+  const handleButtonClick = () => {
+    // Play the click sound when a button is clicked
+    clickSound.play();
+
+    // Add your button click logic here
+    navigate("/play");
   };
 
   return (
@@ -167,8 +207,6 @@ function HomePage() {
                         </div>
                       )}
                     </Menu.Item>
-
-
                     <Menu.Item>
                       {({ active }) => (
                         <div
@@ -213,7 +251,7 @@ function HomePage() {
         <div className="absolute top-1/2 transform -translate-y-1/2 ml-20">
           <button
             className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-8 px-9 rounded-full text-6xl"
-            onClick={() => navigate("/play")}
+            onClick={handleButtonClick}
           >
             <Link to={"/play"} className="text-blue-100">
               Play
@@ -322,6 +360,13 @@ function HomePage() {
             </div>
           </div>
         )}
+
+        {/* Sound Mute Button */}
+        <div className="absolute bottom-28 left-96">
+          <button className="text-white" onClick={toggleMute}>
+            {isMuted ? <FaVolumeUp size={30} /> : <FaVolumeMute size={30} />}
+          </button>
+        </div>
       </div>
     </div>
   );
