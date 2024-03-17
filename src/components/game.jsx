@@ -5,7 +5,7 @@ import { useAuth } from "../contexts/authContext/index";
 import { fetchUsernameFromDatabase, saveHighscoreToDatabase, saveProfileToDatabase, fetchHighscoreFromDatabase } from "../fireebase/firebaseUtils";
 import { Howl, Howler } from 'howler'; // Import Howler
 import clickSoundUrl from '../assets/click1.wav'; // Import click sound URL
-import gameOverSoundUrl from '../assets/gameover.wav'; // Import game over sound URL
+import gameOverSoundUrl from '../assets/gameover.wav';
 
 function TomatoGame() {
   const { currentUser } = useAuth();
@@ -25,12 +25,12 @@ function TomatoGame() {
 
   const clickSound = new Howl({
     src: [clickSoundUrl],
-    volume: 0.5, // Adjust the volume as needed
+    volume: 0.5, 
   });
 
   const gameOverSound = new Howl({
     src: [gameOverSoundUrl],
-    volume: 0.5, // Adjust the volume as needed
+    volume: 0.5, 
   });
 
   useEffect(() => {
@@ -114,7 +114,7 @@ function TomatoGame() {
   };
 
   const handleNumberClick = (number) => {
-    clickSound.play(); // Play click sound
+    clickSound.play(); 
 
     if (number === solution) {
       setIsCorrect(true);
@@ -128,7 +128,7 @@ function TomatoGame() {
   };
 
   const handleRestart = () => {
-    clickSound.play(); // Play click sound
+    clickSound.play(); 
 
     setShowGameOver(false);
     setShowHighScore(false);

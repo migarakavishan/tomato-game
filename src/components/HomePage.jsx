@@ -319,7 +319,7 @@ function HomePage() {
                   />
                 </div>
               </div>
-              {/* Username and Email Inputs */}
+              
               <div className="mb-4">
                 <label className="block mb-1">Username</label>
                 <input
@@ -361,7 +361,7 @@ function HomePage() {
           </div>
         )}
 
-        {/* Sound Mute Button */}
+        {/* sound mute  button */}
         <div className="absolute bottom-28 left-96">
           <button className="text-white" onClick={toggleMute}>
             {isMuted ? <FaVolumeUp size={30} /> : <FaVolumeMute size={30} />}

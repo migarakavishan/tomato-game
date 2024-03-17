@@ -24,7 +24,7 @@ function SignUp() {
       try {
         const user = await doCreateUserWithEmailAndPassword(email, password);
         console.log("User signed up successfully:", user);
-        // Redirect or show success message to the user
+        
       } catch (error) {
         console.error("Error signing up:", error.message);
         setError(error.message);

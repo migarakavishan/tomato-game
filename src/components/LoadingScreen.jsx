@@ -26,7 +26,7 @@ function LoadingScreen() {
           y: tomato.y + tomato.vy, // Update Y position
         }))
       );
-    }, 10); // Update position every 10 milliseconds
+    }, 10); 
 
     return () => clearInterval(interval);
   }, []);

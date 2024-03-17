@@ -28,7 +28,7 @@ function LeaderboardPage() {
     return () => {};
   }, []);
 
-  // Function to convert object to array and sort by highscore
+  
   const sortDataByHighscore = (data) => {
     if (!data) return [];
     return Object.entries(data)
