@@ -9,6 +9,7 @@ import HomePage from "./components/HomePage";
 import MenuPage from "./components/MenuPage";
 import LeaderboardPage from "./components/LeaderboardPage";
 import TomatoGameGuest from "./components/gameGuest";
+import Instruction from "./components/instruction";
 
 
 
@@ -39,6 +40,7 @@ function App() {
             <Route path="home" element={<HomePage />} />
             <Route path="leaderboard" element={<LeaderboardPage />} />
             <Route path="guestgame" element={<TomatoGameGuest/>}/>
+            <Route path="instruction" element={<Instruction/>} />
             
           </Routes>
         )}

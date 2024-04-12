@@ -5,7 +5,7 @@ import React, { Fragment, useState, useEffect } from "react";
 import { FaAward, FaVolumeMute, FaVolumeUp } from "react-icons/fa";
 import { useAuth } from "../contexts/authContext/index";
 import { doSignOut } from "../fireebase/auth";
-import { MdLeaderboard } from "react-icons/md";
+import { MdLeaderboard,MdErrorOutline  } from "react-icons/md";
 import {
   saveProfileToDatabase,
   fetchUsernameFromDatabase,
@@ -243,6 +243,14 @@ function HomePage() {
             <div className="flex justify-center items-center bg-gray-500 rounded-full h-10 w-10  mr-2">
               <Link to={"/leaderboard"}>
                 <MdLeaderboard className="text-2xl" />
+              </Link>
+            </div>
+          </div>
+
+          <div className="ml-5 pl-3 pt-3 pb-3 rounded-2xl bg-slate-400 text-white pr-1">
+            <div className="flex justify-center items-center bg-gray-500 rounded-full h-10 w-10  mr-2">
+              <Link to={"/instruction"}>
+                <MdErrorOutline className="text-2xl" />
               </Link>
             </div>
           </div>
