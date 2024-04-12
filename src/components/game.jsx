@@ -90,8 +90,8 @@ function TomatoGame() {
       setSolution(parseInt(solution));
       setIsLoading(false);
       setSeconds(seconds => {
-        if (2 > rounds) return 30;
-        else if (4 > rounds) return 25;
+        if (10 > rounds) return 30;
+        else if (20 > rounds) return 25;
         else return 15;
       });
     } catch (error) {

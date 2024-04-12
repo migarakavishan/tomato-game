@@ -24,7 +24,6 @@ function LeaderboardPage() {
 
     fetchData();
 
-    // Clean up listener when component unmounts
     return () => {};
   }, []);
 
