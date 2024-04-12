@@ -3,9 +3,13 @@ import { FaHeart, FaHome, FaRedo, FaArrowLeft } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/authContext/index";
 import { fetchUsernameFromDatabase, saveHighscoreToDatabase, saveProfileToDatabase, fetchHighscoreFromDatabase } from "../fireebase/firebaseUtils";
-import { Howl, Howler } from 'howler'; // Import Howler
+import { Howl } from 'howler'; // Import Howler
 import clickSoundUrl from '../assets/click1.wav'; // Import click sound URL
 import gameOverSoundUrl from '../assets/gameover.wav';
+import { motion } from "framer-motion";
+import { GiTomato } from "react-icons/gi";
+
+
 
 function TomatoGame() {
   const { currentUser } = useAuth();
@@ -194,7 +198,22 @@ function TomatoGame() {
             </>
           )}
           {isLoading && !showGameOver && !showHighScore && (
-            <p className="text-4xl text-white">Loading...</p>
+            <motion.div
+          initial={{ scale: 0 }} // Initial scale before animation starts
+          animate={{ scale: 1 }} // Scale to 1 for animation
+          transition={{ duration: 0.5 }} // Animation duration
+        >
+          <div className="flex justify-center items-center ">
+            <motion.div
+              className="text-red-600"
+              initial={{ rotate: 0 }} // Initial rotation
+              animate={{ rotate: 360 }} // Rotate 360 degrees for animation
+              transition={{ duration: 1, repeat: Infinity }} // Animation duration and repeat infinitely
+            >
+              <GiTomato className="text-8xl" />
+            </motion.div>
+          </div>
+        </motion.div>
           )}
           {showGameOver && (
             <div className="absolute inset-0 flex justify-center items-center bg-black bg-opacity-50">

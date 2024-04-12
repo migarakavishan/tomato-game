@@ -1,24 +1,27 @@
 import { Menu, Transition } from "@headlessui/react";
 import classNames from "classnames";
-import { useNavigate, Link } from "react-router-dom";
-import React, { Fragment, useState, useEffect } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { FaAward, FaVolumeMute, FaVolumeUp } from "react-icons/fa";
+import { MdErrorOutline, MdLeaderboard } from "react-icons/md";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/authContext/index";
 import { doSignOut } from "../fireebase/auth";
-import { MdLeaderboard,MdErrorOutline  } from "react-icons/md";
 import {
-  saveProfileToDatabase,
-  fetchUsernameFromDatabase,
   fetchHighscoreFromDatabase,
+  fetchUsernameFromDatabase,
+  saveProfileToDatabase,
 } from "../fireebase/firebaseUtils";
 
-import { uploadProfileImageToStorage } from "../fireebase/forStroage";
+import tomato1 from "../assets/tomato.png"
+
+
 import { GiTomato } from "react-icons/gi";
+import { uploadProfileImageToStorage } from "../fireebase/forStroage";
 
-import { Howl, Howler } from 'howler';
+import { Howl, Howler } from "howler";
 
-import backgroundSoundUrl from  '../assets/bg.mp3';
-import clickSoundUrl from '../assets/click1.wav';
+import backgroundSoundUrl from "../assets/bg.mp3";
+import clickSoundUrl from "../assets/click1.wav";
 
 function HomePage() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -90,7 +93,6 @@ function HomePage() {
       // Clean up by stopping the background sound when the component unmounts
       backgroundSound.stop();
     };
-
   }, [currentUser, profileOpen]);
 
   const handleProfileSave = () => {
@@ -233,7 +235,7 @@ function HomePage() {
             <div className="flex justify-center items-center bg-gray-500 rounded-full h-8 w-8 mt-1 mr-2">
               <FaAward />
             </div>
-            <div className="flex flex-col mb-2">
+            <div className="flex flex-col mb-2 ">
               <div className="text-lg">{profileData.highscore}</div>
               <div className="text-xs">Highscore</div>
             </div>
@@ -264,8 +266,15 @@ function HomePage() {
             <Link to={"/play"} className="text-blue-100">
               Play
             </Link>
+            
           </button>
+          
         </div>
+        
+        <div className="ml-96 mr-72">
+        <img src={tomato1} alt="Tomato" className="ml-28" />
+        </div>
+        
 
         {/* Welcome Popup Dialog */}
         {showWelcomeDialog && (
@@ -327,7 +336,7 @@ function HomePage() {
                   />
                 </div>
               </div>
-              
+
               <div className="mb-4">
                 <label className="block mb-1">Username</label>
                 <input
