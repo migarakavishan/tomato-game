@@ -22,6 +22,7 @@ import { Howl, Howler } from "howler";
 
 import backgroundSoundUrl from "../assets/bg.mp3";
 import clickSoundUrl from "../assets/click1.wav";
+import TimeComponent from "./TimeComponent";
 
 function HomePage() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -274,6 +275,8 @@ function HomePage() {
         <div className="ml-96 mr-72">
         <img src={tomato1} alt="Tomato" className="ml-28" />
         </div>
+
+        
         
 
         {/* Welcome Popup Dialog */}
@@ -383,6 +386,10 @@ function HomePage() {
           <button className="text-white" onClick={toggleMute}>
             {isMuted ? <FaVolumeUp size={30} /> : <FaVolumeMute size={30} />}
           </button>
+        </div>
+
+        <div className="absolute bottom-28 right-80">
+          <TimeComponent />
         </div>
       </div>
     </div>

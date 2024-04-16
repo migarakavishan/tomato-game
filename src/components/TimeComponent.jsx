@@ -1,64 +1,48 @@
-import React, { useState, useEffect } from 'react';
+import { format } from 'date-fns';
+import React, { useEffect, useState } from 'react';
 
 const TimeComponent = () => {
-  const [timeData, setTimeData] = useState(null);
-  const [ipAddress, setIpAddress] = useState('');
+    const [dateTime, setDateTime] = useState(null);
+    const [timezone, setTimezone] = useState('');
 
-  useEffect(() => {
-    // Function to fetch the IP address using an external service
-    const fetchIpAddress = async () => {
-      try {
-        const response = await fetch('https://api.ipify.org?format=json');
-        const data = await response.json();
-        setIpAddress(data.ip);
-      } catch (error) {
-        console.error('Error fetching IP address:', error);
-      }
-    };
+    useEffect(() => {
+        const fetchTime = async () => {
+            try {
+                const response = await fetch('http://worldtimeapi.org/api/ip');
+                if (!response.ok) {
+                    throw new Error('Failed to fetch');
+                }
+                const data = await response.json();
+                const { datetime, timezone } = data;
+                setDateTime(new Date(datetime));
+                setTimezone(timezone);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
 
-    fetchIpAddress(); // Fetch the IP address when the component mounts
+        fetchTime();
 
-    const intervalId = setInterval(fetchIpAddress, 60000); // Refresh IP every 60 seconds
+        const intervalId = setInterval(fetchTime, 10000);
 
-    return () => clearInterval(intervalId); // Clean up interval on component unmount
-  }, []);
+        return () => clearInterval(intervalId);
+    }, []);
 
-  useEffect(() => {
-    if (ipAddress) {
-      // Fetch time data based on the fetched IP address
-      const fetchTimeData = async () => {
-        try {
-          const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-          const apiUrl = `https://timeapi.io/api/Time/current/ip?ipAddress=${ipAddress}`;
-          const response = await fetch(proxyUrl + apiUrl);
-          const data = await response.json();
-          setTimeData(data);
-        } catch (error) {
-          console.error('Error fetching data:', error);
-        }
-      };
+    const formattedDate = dateTime ? format(dateTime, 'MMMM d, yyyy') : 'Loading...';
+    const formattedTime = dateTime ? format(dateTime, 'h:mm a') : 'Loading...';
 
-      fetchTimeData(); // Initial fetch when IP address is available
-
-      const refreshIntervalId = setInterval(fetchTimeData, 60000); // Refresh data every 60 seconds
-
-      return () => clearInterval(refreshIntervalId); // Clean up interval on component unmount
-    }
-  }, [ipAddress]);
-
-  return (
-    <div>
-      <h1>Current Time and Date</h1>
-      {timeData ? (
-        <div>
-          <p>Time: {timeData.time}</p>
-          <p>Date: {timeData.date}</p>
+    return (
+        <div className="flex justify-center max-w-md mx-auto mt-10">
+            <div className="bg-gray-100 rounded-lg p-4 shadow-md flex flex-col items-center">
+                <p className="font-bold mb-2">Date:</p>
+                <p className="text-lg">{formattedDate}</p>
+                <p className="font-bold mb-2 mt-4">Time:</p>
+                <p className="text-lg">{formattedTime}</p>
+                <p className="font-bold mb-2 mt-4">Timezone:</p>
+                <p className="text-lg">{timezone}</p>
+            </div>
         </div>
-      ) : (
-        <p>Loading...</p>
-      )}
-    </div>
-  );
+    );
 };
 
 export default TimeComponent;

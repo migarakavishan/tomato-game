@@ -42,7 +42,7 @@ function App() {
             <Route path="leaderboard" element={<LeaderboardPage />} />
             <Route path="guestgame" element={<TomatoGameGuest/>}/>
             <Route path="instruction" element={<Instruction/>} />
-            <Route path="timecom" element={<TimeComponent/>} />
+            
             
           </Routes>
         )}
