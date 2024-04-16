@@ -32,16 +32,17 @@ const TimeComponent = () => {
     const formattedTime = dateTime ? format(dateTime, 'h:mm a') : 'Loading...';
 
     return (
-        <div className="flex justify-center max-w-md mx-auto mt-10">
-            <div className="bg-gray-100 rounded-lg p-4 shadow-md flex flex-col items-center">
-                <p className="font-bold mb-2">Date:</p>
-                <p className="text-lg">{formattedDate}</p>
-                <p className="font-bold mb-2 mt-4">Time:</p>
-                <p className="text-lg">{formattedTime}</p>
-                <p className="font-bold mb-2 mt-4">Timezone:</p>
-                <p className="text-lg">{timezone}</p>
-            </div>
-        </div>
+        <div class="flex justify-center max-w-md mx-auto mt-10">
+    <div class="bg-slate-400 text-slate-700 rounded-lg p-4 shadow-md flex items-center">
+
+        <p class="text-lg mr-4">{formattedDate}</p>
+
+        <p class="text-lg mr-4">{formattedTime}</p>
+
+        <p class="text-lg">{timezone}</p>
+    </div>
+</div>
+
     );
 };
 
