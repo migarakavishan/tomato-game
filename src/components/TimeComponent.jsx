@@ -5,10 +5,12 @@ const TimeComponent = () => {
     const [dateTime, setDateTime] = useState(null);
     const [timezone, setTimezone] = useState('');
 
+    const API_URL = 'https://worldtimeapi.org/api/ip';
+
     useEffect(() => {
         const fetchTime = async () => {
             try {
-                const response = await fetch('http://worldtimeapi.org/api/ip');
+                const response = await fetch(API_URL);
                 if (!response.ok) {
                     throw new Error('Failed to fetch');
                 }
